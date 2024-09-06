@@ -180,7 +180,7 @@ function editStudentHandler(classIndex, studentIndex) {
             <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender">
                 <option value="남" ${student.gender === '남' ? 'selected' : ''}>남</option>
                 <option value="여" ${student.gender === '여' ? 'selected' : ''}>여</option>
-                </select>
+            </select>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="birthdate">생년월일:</label>
