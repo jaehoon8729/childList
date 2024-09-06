@@ -1,99 +1,12 @@
 {
-  "kindergartenName": "행복한 꿈동산 유치원",
-  "year": 2023,
+  "kindergartenName": "세명유치원",
+  "year": 2024,
   "classes": [
     {
-      "className": "햇살반",
-      "ageGroup": "5세",
-      "teacher": "김선생",
-      "students": [
-        {
-          "name": "홍길동",
-          "gender": "남",
-          "birthdate": "2018-05-15",
-          "bloodType": "A",
-          "note": "알레르기 없음",
-          "pickedUp": false
-        },
-        {
-          "name": "이미라",
-          "gender": "여",
-          "birthdate": "2018-08-22",
-          "bloodType": "B",
-          "note": "우유 알레르기",
-          "pickedUp": true
-        },
-        {
-          "name": "박준호",
-          "gender": "남",
-          "birthdate": "2018-03-10",
-          "bloodType": "O",
-          "note": "특이사항 없음",
-          "pickedUp": false
-        }
-      ]
-    },
-    {
-      "className": "별빛반",
-      "ageGroup": "4세",
-      "teacher": "이선생",
-      "students": [
-        {
-          "name": "김나리",
-          "gender": "여",
-          "birthdate": "2019-02-14",
-          "bloodType": "A",
-          "note": "견과류 알레르기",
-          "pickedUp": true
-        },
-        {
-          "name": "최우진",
-          "gender": "남",
-          "birthdate": "2019-11-30",
-          "bloodType": "AB",
-          "note": "특이사항 없음",
-          "pickedUp": false
-        },
-        {
-          "name": "정다인",
-          "gender": "여",
-          "birthdate": "2019-07-07",
-          "bloodType": "B",
-          "note": "꽃가루 알레르기",
-          "pickedUp": true
-        }
-      ]
-    },
-    {
-      "className": "무지개반",
-      "ageGroup": "3세",
+      "className": "뜰보리수반",
+      "ageGroup": "6세",
       "teacher": "박선생",
-      "students": [
-        {
-          "name": "송민우",
-          "gender": "남",
-          "birthdate": "2020-01-25",
-          "bloodType": "O",
-          "note": "특이사항 없음",
-          "pickedUp": false
-        },
-        {
-          "name": "강수진",
-          "gender": "여",
-          "birthdate": "2020-09-18",
-          "bloodType": "A",
-          "note": "계란 알레르기",
-          "pickedUp": true
-        },
-        {
-          "name": "윤서준",
-          "gender": "남",
-          "birthdate": "2020-06-03",
-          "bloodType": "B",
-          "note": "특이사항 없음",
-          "pickedUp": false
-        }
-      ]
+      "students": []
     }
   ]
 }
