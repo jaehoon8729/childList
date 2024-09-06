@@ -1,26 +1,22 @@
 // fileHandler.js
-import { state } from './data.js';
-import { displayData } from './ui.js';
-import { showMessage } from './utils.js';
-
-export function handleFileUpload(event) {
-    const file = event.target.files[0];
+function handleFileUpload(event) {
+    var file = event.target.files[0];
     if (file) {
-        const reader = new FileReader();
+        var reader = new FileReader();
         reader.onload = function(e) {
             try {
-                const content = e.target.result;
-                const parsedData = JSON.parse(content);
+                var content = e.target.result;
+                var parsedData = JSON.parse(content);
 
                 // 데이터 유효성 검사
-                const validationResult = isValidKindergartenData(parsedData);
+                var validationResult = isValidKindergartenData(parsedData);
                 if (validationResult.isValid) {
                     state.currentFileName = file.name;
                     state.currentData = parsedData;
                     displayData();
                     showMessage('파일이 성공적으로 로드되었습니다.');
                 } else {
-                    throw new Error(`유효하지 않은 유치원 데이터 형식입니다: ${validationResult.error}`);
+                    throw new Error('유효하지 않은 유치원 데이터 형식입니다: ' + validationResult.error);
                 }
             } catch (error) {
                 console.error('File reading error:', error);
@@ -45,10 +41,10 @@ function isValidKindergartenData(data) {
         return { isValid: false, error: 'classes가 배열이 아닙니다.' };
     }
 
-    for (let i = 0; i < data.classes.length; i++) {
-        const classValidation = isValidClass(data.classes[i]);
+    for (var i = 0; i < data.classes.length; i++) {
+        var classValidation = isValidClass(data.classes[i]);
         if (!classValidation.isValid) {
-            return { isValid: false, error: `클래스 ${i + 1}에서 오류: ${classValidation.error}` };
+            return { isValid: false, error: '클래스 ' + (i + 1) + '에서 오류: ' + classValidation.error };
         }
     }
 
@@ -72,10 +68,10 @@ function isValidClass(classData) {
         return { isValid: false, error: 'students가 배열이 아닙니다.' };
     }
 
-    for (let i = 0; i < classData.students.length; i++) {
-        const studentValidation = isValidStudent(classData.students[i]);
+    for (var i = 0; i < classData.students.length; i++) {
+        var studentValidation = isValidStudent(classData.students[i]);
         if (!studentValidation.isValid) {
-            return { isValid: false, error: `학생 ${i + 1}에서 오류: ${studentValidation.error}` };
+            return { isValid: false, error: '학생 ' + (i + 1) + '에서 오류: ' + studentValidation.error };
         }
     }
 
@@ -108,7 +104,7 @@ function isValidStudent(student) {
     return { isValid: true };
 }
 
-export function saveData() {
+function saveData() {
     if (state.currentData) {
         localStorage.setItem('kindergartenData', JSON.stringify(state.currentData));
         showMessage('데이터가 로컬 스토리지에 성공적으로 저장되었습니다.');
@@ -117,12 +113,12 @@ export function saveData() {
     }
 }
 
-export function exportData() {
+function exportData() {
     if (state.currentData) {
-        const dataStr = JSON.stringify(state.currentData, null, 2);
-        const blob = new Blob([dataStr], {type: "application/json"});
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        var dataStr = JSON.stringify(state.currentData, null, 2);
+        var blob = new Blob([dataStr], {type: "application/json"});
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
         link.download = state.currentFileName || "kindergarten_data.json";
         link.href = url;
         link.click();
@@ -132,20 +128,20 @@ export function exportData() {
     }
 }
 
-export async function initializeApp() {
+function initializeApp() {
     // 로컬 스토리지에서 데이터 로드
-    const savedData = localStorage.getItem('kindergartenData');
+    var savedData = localStorage.getItem('kindergartenData');
     if (savedData) {
         try {
-            const parsedData = JSON.parse(savedData);
-            const validationResult = isValidKindergartenData(parsedData);
+            var parsedData = JSON.parse(savedData);
+            var validationResult = isValidKindergartenData(parsedData);
             if (validationResult.isValid) {
                 state.currentData = parsedData;
                 state.currentFileName = 'local_storage_data.json';
-                await displayData();
+                displayData();
                 showMessage('저장된 데이터를 불러왔습니다.');
             } else {
-                throw new Error(`저장된 데이터가 유효하지 않습니다: ${validationResult.error}`);
+                throw new Error('저장된 데이터가 유효하지 않습니다: ' + validationResult.error);
             }
         } catch (error) {
             console.error('Error loading saved data:', error);
@@ -157,6 +153,6 @@ export async function initializeApp() {
         // 저장된 데이터가 없는 경우
         state.currentData = null;
         state.currentFileName = '';
-        await displayData(); // 빈 상태로 UI 초기화
+        displayData(); // 빈 상태로 UI 초기화
     }
 }
