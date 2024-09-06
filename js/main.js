@@ -6,9 +6,10 @@ import { displayData } from './ui.js';
 window.handleFileUpload = handleFileUpload;
 window.saveData = saveData;
 window.exportData = exportData;
-window.displayData = displayData;
+window.displayData = () => displayData();  // 비동기 함수 호출을 위해 래퍼 함수 사용
 
 // 초기화
-window.onload = function() {
-    initializeApp();
+window.onload = async function() {
+    await initializeApp();
+    await displayData();
 };

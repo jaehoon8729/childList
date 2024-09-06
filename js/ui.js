@@ -2,10 +2,21 @@
 import { state, addClass, deleteClass, addStudent, deleteStudent, editStudent, updatePickupStatus, moveClass, moveStudent } from './data.js';
 import { showModal, showMessage } from './utils.js';
 
-export function displayData() {
+let Sortable;
+
+// SortableJS 동적 로드
+async function loadSortable() {
+    if (!Sortable) {
+        Sortable = (await import('https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/modular/sortable.esm.js')).default;
+    }
+}
+
+export async function displayData() {
+    await loadSortable();  // Sortable 로드 확인
+
     const dataView = document.getElementById('dataView');
     dataView.innerHTML = '';
-
+    console.log("state", state);
     if (state.currentData.kindergartenName && state.currentData.year && state.currentData.classes) {
         const title = document.createElement('h2');
         title.className = 'text-2xl font-bold mb-4';
@@ -27,15 +38,8 @@ export function displayData() {
             classDiv.className = 'p-4 bg-gray-50 rounded shadow';
             classDiv.dataset.classIndex = classIndex;
 
-            const dragHandle = document.createElement('div');
-            dragHandle.className = 'drag-handle float-left mr-2';
-            dragHandle.innerHTML = '☰';
-            dragHandle.draggable = true;
-            dragHandle.ondragstart = (e) => dragStart(e, 'class', classIndex);
-            classDiv.appendChild(dragHandle);
-
             const classTitle = document.createElement('h3');
-            classTitle.className = 'text-xl font-semibold mb-2';
+            classTitle.className = 'text-xl font-semibold mb-2 cursor-move';
             classTitle.textContent = `${classData.className} (${classData.ageGroup})`;
             classDiv.appendChild(classTitle);
 
@@ -55,7 +59,6 @@ export function displayData() {
             studentsTable.innerHTML = `
                 <thead>
                     <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2"></th>
                         <th class="border border-gray-300 px-4 py-2">이름</th>
                         <th class="border border-gray-300 px-4 py-2">성별</th>
                         <th class="border border-gray-300 px-4 py-2">생년월일</th>
@@ -68,9 +71,6 @@ export function displayData() {
                 <tbody>
                     ${classData.students.map((student, studentIndex) => `
                         <tr data-student-index="${studentIndex}">
-                            <td class="border border-gray-300 px-4 py-2">
-                                <div class="drag-handle cursor-move" draggable="true" data-class-index="${classIndex}" data-student-index="${studentIndex}">☰</div>
-                            </td>
                             <td class="border border-gray-300 px-4 py-2">${student.name}</td>
                             <td class="border border-gray-300 px-4 py-2">${student.gender}</td>
                             <td class="border border-gray-300 px-4 py-2">${student.birthdate}</td>
@@ -103,57 +103,36 @@ export function displayData() {
         });
 
         dataView.appendChild(classesList);
+
+        // SortableJS 초기화
+        new Sortable(classesList, {
+            animation: 150,
+            handle: '.text-xl',
+            onEnd: function (evt) {
+                const fromIndex = evt.oldIndex;
+                const toIndex = evt.newIndex;
+                if (fromIndex !== toIndex) {
+                    moveClass(fromIndex, toIndex);
+                    showMessage('반 순서가 변경되었습니다.');
+                }
+            },
+        });
+
+        state.currentData.classes.forEach((classData, classIndex) => {
+            const studentsList = document.querySelector(`[data-class-index="${classIndex}"] tbody`);
+            new Sortable(studentsList, {
+                animation: 150,
+                onEnd: function (evt) {
+                    const fromIndex = evt.oldIndex;
+                    const toIndex = evt.newIndex;
+                    if (fromIndex !== toIndex) {
+                        moveStudent(classIndex, fromIndex, classIndex, toIndex);
+                        showMessage('학생 순서가 변경되었습니다.');
+                    }
+                },
+            });
+        });
     }
-
-    // 드래그 앤 드롭 이벤트 핸들러
-    function dragStart(e, type, classIndex, studentIndex) {
-        e.dataTransfer.setData('text/plain', JSON.stringify({
-            type,
-            classIndex,
-            studentIndex
-        }));
-    }
-
-    function dragOver(e) {
-        e.preventDefault();
-    }
-
-    function drop(e) {
-        e.preventDefault();
-        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-        const targetClassDiv = e.target.closest('[data-class-index]');
-        const targetClassIndex = targetClassDiv ? parseInt(targetClassDiv.dataset.classIndex) : null;
-
-        if (data.type === 'class' && targetClassIndex !== null) {
-            const fromIndex = parseInt(data.classIndex);
-            if (fromIndex !== targetClassIndex) {
-                moveClass(fromIndex, targetClassIndex);
-                displayData();
-                showMessage('반 순서가 변경되었습니다.');
-            }
-        } else if (data.type === 'student') {
-            const fromClassIndex = parseInt(data.classIndex);
-            const fromStudentIndex = parseInt(data.studentIndex);
-            const targetStudentRow = e.target.closest('[data-student-index]');
-
-            if (targetClassIndex !== null && targetStudentRow) {
-                const toStudentIndex = parseInt(targetStudentRow.dataset.studentIndex);
-                moveStudent(fromClassIndex, fromStudentIndex, targetClassIndex, toStudentIndex);
-                displayData();
-                showMessage('학생 순서가 변경되었습니다.');
-            }
-        }
-    }
-
-    // 드래그 앤 드롭 이벤트 리스너 추가
-    document.querySelectorAll('#classesList > div').forEach(classDiv => {
-        classDiv.ondragover = dragOver;
-        classDiv.ondrop = drop;
-    });
-
-    document.querySelectorAll('tr [draggable="true"]').forEach(handle => {
-        handle.ondragstart = (e) => dragStart(e, 'student', handle.dataset.classIndex, handle.dataset.studentIndex);
-    });
 
     // 전역 스코프에 필요한 함수들을 노출
     window.editStudent = (classIndex, studentIndex) => {
