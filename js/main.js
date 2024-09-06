@@ -19,20 +19,4 @@ window.onload = async function() {
     } else {
         console.error('File input element not found');
     }
-
-    // 저장하기 버튼에 이벤트 리스너 추가
-    const saveButton = document.getElementById('saveButton');
-    if (saveButton) {
-        saveButton.addEventListener('click', saveData);
-    } else {
-        console.error('Save button not found');
-    }
-
-    // 내보내기 버튼에 이벤트 리스너 추가
-    const exportButton = document.getElementById('exportButton');
-    if (exportButton) {
-        exportButton.addEventListener('click', exportData);
-    } else {
-        console.error('Export button not found');
-    }
 };

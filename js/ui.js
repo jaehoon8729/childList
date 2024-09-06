@@ -7,7 +7,7 @@ let Sortable;
 // SortableJS 동적 로드
 async function loadSortable() {
     if (!Sortable) {
-        Sortable = (await import('https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/modular/sortable.esm.js')).default;
+        Sortable = (await import('../lib/sortable.esm.js')).default;
     }
 }
 
