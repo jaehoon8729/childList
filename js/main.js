@@ -6,10 +6,33 @@ import { displayData } from './ui.js';
 window.handleFileUpload = handleFileUpload;
 window.saveData = saveData;
 window.exportData = exportData;
-window.displayData = () => displayData();  // 비동기 함수 호출을 위해 래퍼 함수 사용
+window.displayData = displayData;
 
 // 초기화
 window.onload = async function() {
     await initializeApp();
-    await displayData();
+
+    // 파일 입력 요소에 이벤트 리스너 추가
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', handleFileUpload);
+    } else {
+        console.error('File input element not found');
+    }
+
+    // 저장하기 버튼에 이벤트 리스너 추가
+    const saveButton = document.getElementById('saveButton');
+    if (saveButton) {
+        saveButton.addEventListener('click', saveData);
+    } else {
+        console.error('Save button not found');
+    }
+
+    // 내보내기 버튼에 이벤트 리스너 추가
+    const exportButton = document.getElementById('exportButton');
+    if (exportButton) {
+        exportButton.addEventListener('click', exportData);
+    } else {
+        console.error('Export button not found');
+    }
 };

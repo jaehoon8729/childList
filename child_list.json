@@ -1,105 +1,97 @@
 {
-  "kindergartenName": "세명유치원",
-  "year": 2024,
+  "kindergartenName": "행복한 꿈동산 유치원",
+  "year": 2023,
   "classes": [
     {
-      "className": "뜰보리수반",
-      "ageGroup": "만 6세",
-      "teacher": "박시연",
+      "className": "햇살반",
+      "ageGroup": "5세",
+      "teacher": "김선생",
       "students": [
         {
-          "id": 1,
-          "name": "김민준",
+          "name": "홍길동",
           "gender": "남",
-          "birthdate": "2021-05-15",
+          "birthdate": "2018-05-15",
           "bloodType": "A",
-          "note": "우유 알레르기 있음, 낮잠 시간에 잠들기 어려워함"
+          "note": "알레르기 없음",
+          "pickedUp": false
         },
         {
-          "id": 2,
-          "name": "이서연",
+          "name": "이미라",
           "gender": "여",
-          "birthdate": "2021-08-22",
-          "bloodType": "O",
-          "note": "그림 그리기를 매우 좋아함"
-        },
-        {
-          "id": 3,
-          "name": "박지우",
-          "gender": "여",
-          "birthdate": "2021-03-10",
+          "birthdate": "2018-08-22",
           "bloodType": "B",
-          "note": "땅콩 알레르기 있음, 노래 부르기를 좋아함"
+          "note": "우유 알레르기",
+          "pickedUp": true
+        },
+        {
+          "name": "박준호",
+          "gender": "남",
+          "birthdate": "2018-03-10",
+          "bloodType": "O",
+          "note": "특이사항 없음",
+          "pickedUp": false
         }
       ]
     },
     {
-      "className": "민들레반",
-      "ageGroup": "만 4세",
+      "className": "별빛반",
+      "ageGroup": "4세",
       "teacher": "이선생",
       "students": [
         {
-          "id": 4,
-          "name": "최현우",
-          "gender": "남",
-          "birthdate": "2020-11-30",
-          "bloodType": "AB",
-          "note": "활동적이며 운동을 좋아함"
-        },
-        {
-          "id": 5,
-          "name": "정소율",
+          "name": "김나리",
           "gender": "여",
-          "birthdate": "2020-07-18",
+          "birthdate": "2019-02-14",
           "bloodType": "A",
-          "note": "계란 알레르기 있음, 책 읽기를 매우 좋아함"
+          "note": "견과류 알레르기",
+          "pickedUp": true
         },
         {
-          "id": 6,
-          "name": "강도윤",
+          "name": "최우진",
           "gender": "남",
-          "birthdate": "2020-09-05",
-          "bloodType": "O",
-          "note": "블록 쌓기 놀이를 즐김"
+          "birthdate": "2019-11-30",
+          "bloodType": "AB",
+          "note": "특이사항 없음",
+          "pickedUp": false
+        },
+        {
+          "name": "정다인",
+          "gender": "여",
+          "birthdate": "2019-07-07",
+          "bloodType": "B",
+          "note": "꽃가루 알레르기",
+          "pickedUp": true
         }
       ]
     },
     {
-      "className": "진달래반",
-      "ageGroup": "만 5세",
+      "className": "무지개반",
+      "ageGroup": "3세",
       "teacher": "박선생",
       "students": [
         {
-          "id": 7,
-          "name": "조하은",
-          "gender": "여",
-          "birthdate": "2019-04-12",
-          "bloodType": "B",
-          "note": "딸기 알레르기 있음, 춤추기를 좋아함"
-        },
-        {
-          "id": 8,
-          "name": "윤선우",
+          "name": "송민우",
           "gender": "남",
-          "birthdate": "2019-01-25",
-          "bloodType": "A",
-          "note": "퍼즐 맞추기를 잘함"
-        },
-        {
-          "id": 9,
-          "name": "장미나",
-          "gender": "여",
-          "birthdate": "2019-06-30",
+          "birthdate": "2020-01-25",
           "bloodType": "O",
-          "note": "식물 가꾸기에 관심이 많음"
+          "note": "특이사항 없음",
+          "pickedUp": false
         },
         {
-          "id": 10,
-          "name": "한준서",
+          "name": "강수진",
+          "gender": "여",
+          "birthdate": "2020-09-18",
+          "bloodType": "A",
+          "note": "계란 알레르기",
+          "pickedUp": true
+        },
+        {
+          "name": "윤서준",
           "gender": "남",
-          "birthdate": "2019-12-03",
-          "bloodType": "AB",
-          "note": "견과류 알레르기 있음, 공룡에 대해 매우 관심이 많음"
+          "birthdate": "2020-06-03",
+          "bloodType": "B",
+          "note": "특이사항 없음",
+          "pickedUp": false
         }
       ]
     }
