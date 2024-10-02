@@ -1,8 +1,20 @@
 {
   "name": "유치원생 관리 어시스턴트",
+  "icons": [
+    {
+      "src": "icon/pwa-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon/pwa-icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
   "short_name": "유치원 관리",
   "description": "유치원생 정보를 관리하는 웹 애플리케이션",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3B82F6"
