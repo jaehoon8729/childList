@@ -169,10 +169,18 @@ Alpine.data('kindergartenApp', () => ({
         };
     },
 
+    updateVehicleStatus(classIndex, studentIndex, vehicle) {
+        this.currentData.classes[classIndex].students[studentIndex].vehicle = vehicle;
+        const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
+        this.showMessage(`${studentName}의 등/하원 방식이 ${vehicle ? '보도' : '차량'}으로 변경되었습니다.`);
+        localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
+    },
+
     updatePickupStatus(classIndex, studentIndex, isPickedUp) {
         this.currentData.classes[classIndex].students[studentIndex].pickedUp = isPickedUp;
         const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
-        this.showMessage(`${studentName}의 하원 상태가 ${isPickedUp ? '하원' : '등원'}으로 변경되었습니다.`);
+        this.showMessage(`${studentName}의 등/하원 여부가 ${isPickedUp ? '하원' : '등원'}으로 변경되었습니다.`);
+        localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
     },
 
     moveClass(fromIndex, toIndex) {
@@ -186,6 +194,7 @@ Alpine.data('kindergartenApp', () => ({
         const classes = [...this.currentData.classes];
         const currentClass = {...classes[classIndex]};
         const students = [...currentClass.students];
+        console.log("students", students)
         const [movedStudent] = students.splice(fromIndex, 1);
         students.splice(toIndex, 0, movedStudent);
 
@@ -237,9 +246,6 @@ Alpine.data('kindergartenApp', () => ({
 
             for (let student of classData.students) {
                 if (typeof student.name !== 'string') return false;
-                if (typeof student.gender !== 'string') return false;
-                if (typeof student.birthdate !== 'string') return false;
-                if (typeof student.bloodType !== 'string') return false;
                 if (typeof student.note !== 'string') return false;
                 if (typeof student.pickedUp !== 'boolean') return false;
             }
@@ -257,26 +263,6 @@ Alpine.data('kindergartenApp', () => ({
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" value="${student.name}">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">성별:</label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender">
-                        <option value="남" ${student.gender === '남' ? 'selected' : ''}>남</option>
-                        <option value="여" ${student.gender === '여' ? 'selected' : ''}>여</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="birthdate">생년월일:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="birthdate" type="date" value="${student.birthdate}">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bloodType">혈액형:</label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bloodType">
-                        <option value="A" ${student.bloodType === 'A' ? 'selected' : ''}>A</option>
-                        <option value="B" ${student.bloodType === 'B' ? 'selected' : ''}>B</option>
-                        <option value="O" ${student.bloodType === 'O' ? 'selected' : ''}>O</option>
-                        <option value="AB" ${student.bloodType === 'AB' ? 'selected' : ''}>AB</option>
-                    </select>
-                </div>
-                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="note">특이사항:</label>
                     <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="note">${student.note}</textarea>
                 </div>
@@ -287,9 +273,6 @@ Alpine.data('kindergartenApp', () => ({
             const form = document.getElementById('editStudentForm');
             const updatedStudent = {
                 name: form.name.value,
-                gender: form.gender.value,
-                birthdate: form.birthdate.value,
-                bloodType: form.bloodType.value,
                 note: form.note.value
             };
             this.editStudent(classIndex, studentIndex, updatedStudent);
@@ -368,26 +351,6 @@ Alpine.data('kindergartenApp', () => ({
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text">
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="gender">성별:</label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender">
-                        <option value="남">남</option>
-                        <option value="여">여</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="birthdate">생년월일:</label>
-                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="birthdate" type="date">
-                </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="bloodType">혈액형:</label>
-                    <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="bloodType">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="O">O</option>
-                        <option value="AB">AB</option>
-                    </select>
-                </div>
-                <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="note">특이사항:</label>
                     <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="note"></textarea>
                 </div>
@@ -398,10 +361,8 @@ Alpine.data('kindergartenApp', () => ({
             const form = document.getElementById('addStudentForm');
             const newStudent = {
                 name: form.name.value,
-                gender: form.gender.value,
-                birthdate: form.birthdate.value,
-                bloodType: form.bloodType.value,
                 note: form.note.value,
+                vehicle: '보도',
                 pickedUp: false
             };
             this.addStudent(classIndex, newStudent);

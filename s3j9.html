@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>유치원 관리 시스템</title>
+    <title>유치원생 관리 시스템</title>
     <link rel="stylesheet" href="css/style.css">
     <script type="module" src="js/dataController.js"></script>
     <script type="module">
@@ -19,13 +19,22 @@
     <!--<script type="module" src="js/main.js"></script>-->
 <!--    <script type="text/javascript" src="pwa.js"></script>-->
 </head>
-<body>
+<body class="bg-gray-100">
 <div x-data="kindergartenApp" class="container mx-auto p-4">
-    <h1 class="text-3xl font-bold mb-4">유치원 관리 시스템</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center">유치원 관리 시스템</h1>
 
-    <input type="file" id="fileInput" @change="handleFileUpload" accept=".json">
-    <button @click="saveData" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">저장</button>
-    <button @click="exportData" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">내보내기</button>
+    <div class="flex flex-col min-[300px]:flex-row min-[300px]:justify-between items-center mb-6 min-w-480">
+        <div class="w-full min-[300px]:w-auto mb-4 min-[300px]:mb-0">
+            <label for="fileInput" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer inline-block">
+                파일 업로드
+                <input type="file" id="fileInput" @change="handleFileUpload" accept=".json" class="hidden">
+            </label>
+        </div>
+        <div class="w-full min-[300px]:w-auto flex justify-center min-[300px]:justify-end space-x-2">
+            <button @click="saveData" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 sm:px-4 rounded text-sm sm:text-base">저장</button>
+            <button @click="exportData" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 sm:px-4 rounded text-sm sm:text-base">내보내기</button>
+        </div>
+    </div>
 
     <div id="dataView" class="mt-4">
         <template x-if="!currentData">
@@ -33,50 +42,54 @@
         </template>
         <template x-if="currentData">
             <div>
-                <h2 class="text-2xl font-bold mb-4" x-text="`${currentData.kindergartenName} (${currentData.year}년)`"></h2>
-                <button @click="addClassHandler" class="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">반 추가</button>
+                <h2 class="text-2xl font-bold mb-4 text-center" x-text="`${currentData.kindergartenName} (${currentData.year}년)`"></h2>
+                <button @click="addClassHandler" class="mb-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">반 추가</button>
                 <div id="classesList" class="space-y-4">
                     <template x-for="(classData, classIndex) in currentData.classes" :key="classData.className + classIndex">
-                        <div class="p-4 bg-gray-50 rounded shadow" :data-class-index="classIndex">
+                        <div class="p-4 bg-white rounded shadow" :data-class-index="classIndex">
                             <h3 class="text-xl font-semibold mb-2 cursor-move" x-text="`${classData.className} (${classData.ageGroup})`"></h3>
                             <p class="mb-2 text-gray-600" x-text="`담임: ${classData.teacher}`"></p>
                             <button @click="handleDeleteClass(classIndex)" class="mb-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm">반 삭제</button>
-                            <table class="w-full border-collapse border border-gray-300">
-                                <thead>
-                                <tr class="bg-gray-200">
-                                    <th class="border border-gray-300 px-4 py-2">이름</th>
-                                    <th class="border border-gray-300 px-4 py-2">성별</th>
-                                    <th class="border border-gray-300 px-4 py-2">생년월일</th>
-                                    <th class="border border-gray-300 px-4 py-2">혈액형</th>
-                                    <th class="border border-gray-300 px-4 py-2">특이사항</th>
-                                    <th class="border border-gray-300 px-4 py-2">하원 여부</th>
-                                    <th class="border border-gray-300 px-4 py-2">작업</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template x-for="(student, studentIndex) in classData.students" :key="student.name + studentIndex">
-                                    <tr :data-student-index="studentIndex">
-                                        <td class="border border-gray-300 px-4 py-2" x-text="student.name"></td>
-                                        <td class="border border-gray-300 px-4 py-2" x-text="student.gender"></td>
-                                        <td class="border border-gray-300 px-4 py-2" x-text="student.birthdate"></td>
-                                        <td class="border border-gray-300 px-4 py-2" x-text="student.bloodType"></td>
-                                        <td class="border border-gray-300 px-4 py-2" x-text="student.note"></td>
-                                        <td class="border border-gray-300 px-4 py-2">
-                                            <label class="pickup-toggle">
-                                                <input type="checkbox" x-model="student.pickedUp" @change="updatePickupStatus(classIndex, studentIndex, $event.target.checked)">
-                                                <span class="pickup-slider"></span>
-                                            </label>
-                                            <span class="pickup-status" x-text="student.pickedUp ? '하원' : '등원'"></span>
-                                        </td>
-                                        <td class="border border-gray-300 px-4 py-2">
-                                            <button @click="editStudentHandler(classIndex, studentIndex)" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm mr-1">수정</button>
-                                            <button @click="deleteStudentHandler(classIndex, studentIndex)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm">삭제</button>
-                                        </td>
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse border border-gray-300">
+                                    <thead>
+                                    <tr class="bg-gray-200">
+                                        <th class="border border-gray-300 px-2 py-2">이름</th>
+                                        <th class="border border-gray-300 px-2 py-2">특이사항</th>
+                                        <th class="border border-gray-300 py-2">등/하원 방법</th>
+                                        <th class="border border-gray-300 py-2">등/하원 여부</th>
+                                        <th class="border border-gray-300 py-2">작업</th>
                                     </tr>
-                                </template>
-                                </tbody>
-                            </table>
-                            <button @click="handleAddStudent(classIndex)" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">학생 추가</button>
+                                    </thead>
+                                    <tbody>
+                                    <template x-for="(student, studentIndex) in classData.students" :key="student.name + studentIndex">
+                                        <tr>
+                                            <td class="border border-gray-300 px-2 py-2" x-text="student.name"></td>
+                                            <td class="border border-gray-300 px-2 py-2" x-text="student.note"></td>
+                                            <td class="border border-gray-300 px-2 py-2">
+                                                <label class="pickup-toggle">
+                                                    <input type="checkbox" x-model="student.vehicle" @change="updateVehicleStatus(classIndex, studentIndex, $event.target.checked)">
+                                                    <span class="pickup-slider"></span>
+                                                </label>
+                                                <span class="pickup-status" x-text="student.vehicle ? '보도' : '차량'"></span>
+                                            </td>
+                                            <td class="border border-gray-300 px-2 py-2">
+                                                <label class="pickup-toggle">
+                                                    <input type="checkbox" x-model="student.pickedUp" @change="updatePickupStatus(classIndex, studentIndex, $event.target.checked)">
+                                                    <span class="pickup-slider"></span>
+                                                </label>
+                                                <span class="pickup-status" x-text="student.pickedUp ? '하원' : '등원'"></span>
+                                            </td>
+                                            <td class="border border-gray-300 px-2 py-2">
+                                                <button @click="editStudentHandler(classIndex, studentIndex)" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded text-sm mr-1">수정</button>
+                                                <button @click="deleteStudentHandler(classIndex, studentIndex)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-sm">삭제</button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button @click="handleAddStudent(classIndex)" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full sm:w-auto">학생 추가</button>
                         </div>
                     </template>
                 </div>
