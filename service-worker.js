@@ -4,13 +4,12 @@ const urlsToCache = [
     '/',
     '/s3j9.html',
     '/js/dataController.js',
-    '/lib/sortable.esm.js',
     '/css/style.css',
     '/lib/sortable.esm.js',
     '/lib/sweetalert2@11.js',
     '/lib/tailwindcss.js',
     '/lib/alpinejs@3.14.1.esm.min.js',
-    '/pwd.js'
+    '/pwa.js'
 ];
 
 self.addEventListener('install', (event) => {
