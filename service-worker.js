@@ -4,7 +4,7 @@ const urlsToCache = [
     '/',
     '/s3j9.html',
     '/js/dataController.js',
-    '/js/lib/sortable.esm.js',
+    '/lib/sortable.esm.js',
     '/css/style.css',
     '/lib/sortable.esm.js',
     '/lib/sweetalert2@11.js',
