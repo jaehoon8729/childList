@@ -12,9 +12,6 @@ Alpine.data('kindergartenApp', () => ({
         this.$nextTick(() => {
             this.initializeSortable();
         });
-        this.$watch('currentData.classes', (newValue, oldValue) => {
-            this.initializeSortable();
-        })
     },
 
 
@@ -366,6 +363,7 @@ Alpine.data('kindergartenApp', () => ({
             };
             this.addStudent(classIndex, newStudent);
             this.showMessage('새 학생이 추가되었습니다.');
+            this.initializeSortable();
         });
     }
 }));
