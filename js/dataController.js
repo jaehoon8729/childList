@@ -84,7 +84,7 @@ Alpine.data('kindergartenApp', () => ({
                             const fromIndex = evt.oldIndex;
                             const toIndex = evt.newIndex;
                             if (fromIndex !== toIndex) {
-                                this.moveStudent(classIndex, fromIndex, toIndex);
+                                this.moveStudent(classIndex, toIndex, fromIndex);
                                 this.showMessage('학생 순서가 변경되었습니다.');
                             }
                         },
@@ -144,20 +144,27 @@ Alpine.data('kindergartenApp', () => ({
         }
     },
 
+    save() {
+        localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
+    },
     addClass(newClass) {
         this.currentData.classes.push(newClass);
+        this.save();
     },
 
     deleteClass(classIndex) {
         this.currentData.classes.splice(classIndex, 1);
+        this.save();
     },
 
     addStudent(classIndex, newStudent) {
         this.currentData.classes[classIndex].students.push(newStudent);
+        this.save();
     },
 
     deleteStudent(classIndex, studentIndex) {
         this.currentData.classes[classIndex].students.splice(studentIndex, 1);
+        this.save();
     },
 
     editStudent(classIndex, studentIndex, updatedStudent) {
@@ -165,18 +172,19 @@ Alpine.data('kindergartenApp', () => ({
             ...this.currentData.classes[classIndex].students[studentIndex],
             ...updatedStudent
         };
+        this.save();
     },
 
     updateVehicleStatus(classIndex, studentIndex) {
         const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
         this.showMessage(`${studentName}의 등/하원 방식이 변경되었습니다.`);
-        localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
+        this.save();
     },
 
     updatePickupStatus(classIndex, studentIndex) {
         const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
         this.showMessage(`${studentName}의 등/하원 여부가 변경되었습니다.`);
-        localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
+        this.save();
     },
 
     moveClass(fromIndex, toIndex) {
@@ -184,20 +192,21 @@ Alpine.data('kindergartenApp', () => ({
         const [removedClass] = classes.splice(fromIndex, 1);
         classes.splice(toIndex, 0, removedClass);
         this.currentData.classes = classes;
+        this.save();
     },
 
     moveStudent(classIndex, toIndex, fromIndex) {
         const classes = [...this.currentData.classes];
         const currentClass = {...classes[classIndex]};
         const students = [...currentClass.students];
-        console.log("students", students)
+        
         const [movedStudent] = students.splice(fromIndex, 1);
         students.splice(toIndex, 0, movedStudent);
 
         currentClass.students = students;
         classes[classIndex] = currentClass;
-        console.log(classes)
         this.currentData.classes = classes;
+        this.save();
     },
 
 
