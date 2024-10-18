@@ -15,9 +15,6 @@
     </script>
     <script type="text/javascript" src="lib/sweetalert2@11.js"></script>
     <script type="text/javascript" src="lib/tailwindcss.js"></script>
-<!--    <link rel="manifest" href="manifest.json">-->
-    <!--<script type="module" src="js/main.js"></script>-->
-<!--    <script type="text/javascript" src="pwa.js"></script>-->
 </head>
 <body class="bg-gray-100">
 <div x-data="kindergartenApp" class="container mx-auto p-4">
@@ -64,18 +61,18 @@
                                     <tbody>
                                     <template x-for="(student, studentIndex) in classData.students" :key="student.name + studentIndex">
                                         <tr>
-                                            <td class="border border-gray-300 px-2 py-2" x-text="student.name"></td>
+                                            <td class="border border-gray-300 px-2 py-2 studentName" x-text="student.name"></td>
                                             <td class="border border-gray-300 px-2 py-2" x-text="student.note"></td>
                                             <td class="border border-gray-300 px-2 py-2">
                                                 <label class="pickup-toggle">
-                                                    <input type="checkbox" x-model="student.vehicle" @change="updateVehicleStatus(classIndex, studentIndex, $event.target.checked)">
+                                                    <input type="checkbox" x-model="student.vehicle" @change="updateVehicleStatus(classIndex, studentIndex)">
                                                     <span class="pickup-slider"></span>
                                                 </label>
                                                 <span class="pickup-status" x-text="student.vehicle ? '보도' : '차량'"></span>
                                             </td>
                                             <td class="border border-gray-300 px-2 py-2">
                                                 <label class="pickup-toggle">
-                                                    <input type="checkbox" x-model="student.pickedUp" @change="updatePickupStatus(classIndex, studentIndex, $event.target.checked)">
+                                                    <input type="checkbox" x-model="student.pickedUp" @change="updatePickupStatus(classIndex, studentIndex)">
                                                     <span class="pickup-slider"></span>
                                                 </label>
                                                 <span class="pickup-status" x-text="student.pickedUp ? '하원' : '등원'"></span>

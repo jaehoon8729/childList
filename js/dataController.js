@@ -12,10 +12,11 @@ Alpine.data('kindergartenApp', () => ({
         this.$nextTick(() => {
             this.initializeSortable();
         });
-        this.$watch('currentData.classes', (newValue) => {
+        this.$watch('currentData.classes', (newValue, oldValue) => {
             this.initializeSortable();
         })
     },
+
 
     initializeApp() {
         const savedData = localStorage.getItem('kindergartenData');
@@ -75,13 +76,13 @@ Alpine.data('kindergartenApp', () => ({
             });
             this.sortableInstances.push(classesInstance);
         }
-
         if (this.currentData && Array.isArray(this.currentData.classes)) {
             this.currentData.classes.forEach((classData, classIndex) => {
                 const studentsList = document.querySelector(`[data-class-index="${classIndex}"] tbody`);
                 if (studentsList) {
                     const studentsInstance = new Sortable(studentsList, {
                         animation: 150,
+                        handle: '.studentName',
                         onEnd: (evt) => {
                             const fromIndex = evt.oldIndex;
                             const toIndex = evt.newIndex;
@@ -169,17 +170,15 @@ Alpine.data('kindergartenApp', () => ({
         };
     },
 
-    updateVehicleStatus(classIndex, studentIndex, vehicle) {
-        this.currentData.classes[classIndex].students[studentIndex].vehicle = vehicle;
+    updateVehicleStatus(classIndex, studentIndex) {
         const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
-        this.showMessage(`${studentName}의 등/하원 방식이 ${vehicle ? '보도' : '차량'}으로 변경되었습니다.`);
+        this.showMessage(`${studentName}의 등/하원 방식이 변경되었습니다.`);
         localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
     },
 
-    updatePickupStatus(classIndex, studentIndex, isPickedUp) {
-        this.currentData.classes[classIndex].students[studentIndex].pickedUp = isPickedUp;
+    updatePickupStatus(classIndex, studentIndex) {
         const studentName = this.currentData.classes[classIndex].students[studentIndex].name;
-        this.showMessage(`${studentName}의 등/하원 여부가 ${isPickedUp ? '하원' : '등원'}으로 변경되었습니다.`);
+        this.showMessage(`${studentName}의 등/하원 여부가 변경되었습니다.`);
         localStorage.setItem('kindergartenData', JSON.stringify(this.currentData));
     },
 
