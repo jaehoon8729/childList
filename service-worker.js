@@ -2,17 +2,14 @@
 const CACHE_NAME = 'kindergarten-app-v2';
 const urlsToCache = [
     '/',
-    '/index.html',
-    '/js/main.js',
-    '/js/data.js',
-    '/js/fileHandler.js',
-    '/js/ui.js',
-    '/js/utils.js',
+    '/s3j9.html',
+    '/js/dataController.js',
     '/js/lib/sortable.esm.js',
-    '/css/styles.css',
+    '/css/style.css',
     '/lib/sortable.esm.js',
     '/lib/sweetalert2@11.js',
     '/lib/tailwindcss.js',
+    '/lib/alpinejs@3.14.1.esm.min.js',
     '/pwd.js'
 ];
 
